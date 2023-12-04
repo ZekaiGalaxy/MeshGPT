@@ -22,22 +22,23 @@ wget http://shapenet.cs.stanford.edu/shapenet/obj-zip/ShapeNetCore.v2.zip
 # Details
 - Dataset
     - [ShapeNetV2](http://shapenet.cs.stanford.edu/shapenet/obj-zip/ShapeNetCore.v2.zip), 55 categories.
-    - Chair, Table, Bench, Lamp as test data.
+    - Trained on all 55 categories, finetuned on `Chair`, `Table`, `Bench`, `Lamp`
     - Preprocess
-        - Planar Decimation
-            - Blender
-            - $\alpha \in [1,60]$
-            - Hansdorff distance $d \lt \delta_{hansdorff}$
+        - Planar Decimation (Blender)
+            - angle tolerance $\alpha \in [1,60]$
+            - Hansdorff distance closest and below $\delta_{hansdorff}$
         - Filter
-            - $\leq$ 800 faces
-            - resulting in 28980 in data size.
+            - face num $\leq$ 800
+            - resulting in 28980 in data size
+        - Train Test Split
+            - `Chair`, `Table`, `Bench`, `Lamp` 9:1
         - Normalization
             - centered at origin
             - longest side = 1
         - Augmentation
-            - Scaling [0.75, 1.25], then normalize
+            - Scaling [0.75, 1.25] at each axis, keep longest side = 1
             - Jitter shift [-0.1, 0.1]
-            - Planar Decimation, varying levels
+            - Planar Decimation (PolyGen), varying levels, keep below $\delta_{hansdorff}$
 
 - Training
 - Model
