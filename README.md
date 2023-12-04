@@ -1,4 +1,9 @@
 # MeshGPT
+
+<img src="./pics/vocab.png" width="450px"></img>
+
+<img src="./pics/GPT2.png" width="450px"></img>
+
 Pytorch Implementation of [MeshGPT: Generating Triangle Meshes with Decoder-Only Transformers]("https://arxiv.org/abs/2311.15475")
 
 # Dependencies
@@ -36,12 +41,6 @@ wget http://shapenet.cs.stanford.edu/shapenet/obj-zip/ShapeNetCore.v2.zip
             - Jitter shift [-0.1, 0.1]
             - Planar Decimation (PolyGen), varying levels, keep below $\delta_{hansdorff}$
 
-- Training
-
-    <img src="./pics/vocab.png" width="450px"></img>
-
-    <img src="./pics/GPT2.png" width="450px"></img>
-
 - Model
     - Codebook
         - Sequence ordering (PolyGen)
@@ -55,14 +54,19 @@ wget http://shapenet.cs.stanford.edu/shapenet/obj-zip/ShapeNetCore.v2.zip
         - Encoder E (a stack of SAGEConv Encoders)
             - $Z = E(\mathcal{}M)$
         - Quantization (RQ)
-            - D codes per face, each vertex D/3 code, 3 vertex
+            - D=6 codes per face, each vertex D/3 code, 3 vertex
             - mean pooling vertex, concatenate face
             - $T = RQ(Z)$
+            - Stochastic Sampling, Exponential moving average
         - Decoder G (1D ResNet34)
             - $\mathcal{M} = G(Z)$
-            - classification 
+            - classification of 128
     - GPT
 
+- Training
+    - Encoder-Decoder: 2 A100 2 days
+    - GPT2: 4 A100 5days
+    - Adam, LR=$10^{-4}$, BATCHSIZE=64
 # LikeWise Papers
 
 - PolyGen [Paper](https://arxiv.org/pdf/2002.10880.pdf) [Code](https://github.com/google-deepmind/deepmind-research/tree/master/polygen)
