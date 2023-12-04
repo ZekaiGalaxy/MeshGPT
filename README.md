@@ -1,10 +1,6 @@
 # MeshGPT
 Pytorch Implementation of [MeshGPT: Generating Triangle Meshes with Decoder-Only Transformers]("https://arxiv.org/abs/2311.15475")
 
-<img src="./pics/vocab.png" width="450px"></img>
-
-<img src="./pics/GPT2.png" width="450px"></img>
-
 # Dependencies
 Requirements:
 - Python 3.10, CUDA 11.4
@@ -41,7 +37,31 @@ wget http://shapenet.cs.stanford.edu/shapenet/obj-zip/ShapeNetCore.v2.zip
             - Planar Decimation (PolyGen), varying levels, keep below $\delta_{hansdorff}$
 
 - Training
+
+    <img src="./pics/vocab.png" width="450px"></img>
+
+    <img src="./pics/GPT2.png" width="450px"></img>
+
 - Model
+    - Codebook
+        - Sequence ordering (PolyGen)
+        - Face feature $f_i$
+            - face = $\{(x_1,y_1,z_1),(x_2,y_2,z_2),(x_3,y_3,z_3)\}$
+            - 9 coordinates (positonal embedded)
+            - area
+            - angles between its edges
+            - face normal
+        - Mesh $\mathcal{M} = (f_1,f_2,...,f_N)$
+        - Encoder E (a stack of SAGEConv Encoders)
+            - $Z = E(\mathcal{}M)$
+        - Quantization (RQ)
+            - D codes per face, each vertex D/3 code, 3 vertex
+            - mean pooling vertex, concatenate face
+            - $T = RQ(Z)$
+        - Decoder G (1D ResNet34)
+            - $\mathcal{M} = G(Z)$
+            - classification 
+    - GPT
 
 # LikeWise Papers
 
